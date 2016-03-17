@@ -1,3 +1,5 @@
+package edu.umw.twotter;
+
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
@@ -12,6 +14,9 @@ import java.util.Scanner;
 import java.util.Date;
 import java.util.HashMap;
 
+/**
+ * A simple web server
+ */
 public class Webserver {
   
   public static final String NOT_FOUND_TEMPLATE = "Error: there is no data at '%s'.";
@@ -42,10 +47,15 @@ public class Webserver {
   
   public void listen() {
     assert server != null: "Server must be initialized before listen() is called";
-    Socket socket = null;
     try {
       while (true) {
-        connect(server.accept());
+        final Socket socket = server.accept();
+        // launch a new thread so we can serve simultanious connections
+        new Thread() {
+          public void run() {
+            connect(socket);
+          }
+        }.start();
       }
     } catch (Exception e) {
       e.printStackTrace();

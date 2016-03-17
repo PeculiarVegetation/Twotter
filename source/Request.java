@@ -1,7 +1,14 @@
+package edu.umw.twotter;
+
 import java.util.HashMap;
 
+/**
+ * An object holding data about an HTTP request which has reached our server.
+ * @todo parse cookies and offer as hashmap in Page. *munch* *munch* *munch*
+ */
 public class Request {
   
+  /** The raw data given to us */
   private String text;
   
   public Request(String text) {
@@ -16,10 +23,18 @@ Connection: Keep-Alive
     */
   }
   
+  /**
+   * parse the received data for the connection type
+   * @return type of connection (GET, POST, BREW)
+   */
   public String connectionType() {
     return text.substring(0, Math.max(text.indexOf(" "), 0));
   }
   
+  /**
+   * parse the received data for the page/uri/file requested (eg, /index.html, /image.png)
+   * @return page or filepath requested
+   */
   public String page() {
     int endOfFile = text.indexOf("#");
     if (endOfFile < 0) {
@@ -32,6 +47,10 @@ Connection: Keep-Alive
     return text.substring(connectionType().length(), endOfFile).trim();
   }
   
+  /**
+   * parse the received data for the query string
+   * @return query string (val1=a&val2=b)
+   */
   public String queryString() {
     String queryString = text.substring(connectionType().length()+page().length(), text.indexOf("HTTP"));
     if (queryString.length() > 1) {
@@ -40,6 +59,10 @@ Connection: Keep-Alive
     return queryString;
   }
   
+  /**
+   * A more easily used form of query data
+   * @return query data stored as keys and values
+   */
   public HashMap<String, String> query() {
     String queryString = queryString();
     HashMap<String, String> data = new HashMap<>();
@@ -54,6 +77,10 @@ Connection: Keep-Alive
     return data;
   }
   
+  /**
+   * the data sent to us, without http headers
+   * @return body of the request
+   */
   public String body() {
     return text.substring(Math.max(text.indexOf("\n\n"), 0), text.length());
   }

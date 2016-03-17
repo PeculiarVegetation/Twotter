@@ -1,3 +1,5 @@
+package edu.umw.twotter;
+
 import java.io.Serializable;
 import java.util.prefs.Preferences;
 
@@ -6,8 +8,8 @@ import java.io.*; // Laziness
 /**
  * A class to abstract away storing persistent data using the java prefrences API
  * and an IBM guide at ibm.com/developerworks/library/j-prefapi/
- * 
- * Example use:
+ */ 
+/*  Example use:
  *   Person myPerson = new Person("John");
  *   Remember.put("my data", myPerson);
  *   Person samePerson = (Person) Remember.get("my data");
