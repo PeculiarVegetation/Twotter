@@ -18,7 +18,7 @@ doc:
 	open -a Safari doc/index.html
 
 test:
-	java -jar Twotter.jar
+	java -ea -jar Twotter.jar
 
 stats:
 	find source/ -name '*.java' | xargs wc -l

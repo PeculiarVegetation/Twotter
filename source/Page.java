@@ -24,7 +24,8 @@ public abstract class Page {
   /**
    * Construct a page which may be reached at {@code location}
    */
-  public Page(String location) {
+  public Page(String location)
+  {
     if (!location.startsWith("/")) {
       location = "/"+location;
     }
@@ -35,7 +36,8 @@ public abstract class Page {
    * Wrap metadata around a response from handleConnection(2).
    * @return a fully-formatted http reply
    */
-  public byte[] connect(String received, HashMap<String, String> query) {
+  public byte[] connect(String received, HashMap<String, String> query)
+  {
     byte[] response = handleConnection(received, query).getBytes();
     return String.format(RESPONSE_TEMPLATE,
       HTTP_DATE.format(new Date()),
