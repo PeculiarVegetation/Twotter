@@ -19,52 +19,16 @@ import java.util.HashMap;
 /**
  * A simple web server
  */
-public class WebServer {
+public class WebServer extends Server {
   
   public static final String NOT_FOUND_TEMPLATE = "Error: there is no data at '%s'.";
   
-  ServerSocket server;
-  int port;
-  
   HashMap<String, Page> pages;
   
-  public Webserver(int port)
+  public WebServer(int port)
   {
-    this.port = Math.abs(port);
+    super(port);
     pages = new HashMap<String, Page>();
-  }
-  
-  public void start()
-  {
-    try {
-      server = new ServerSocket(port);
-      new Thread() {
-        public void run() {
-          listen();
-        }
-      }.start();
-      System.err.printf("Listening at %s on port %d...\n", Util.getLocalIP(), port);
-    } catch (java.io.IOException e) {
-      System.err.printf("Could not create server on port %d. Check that this is allowed by your system and that the port is not currently in use.\n", port);
-    }
-  }
-  
-  public void listen()
-  {
-    assert server != null: "Server must be initialized before listen() is called";
-    try {
-      while (true) {
-        final Socket socket = server.accept();
-        // launch a new thread so we can serve simultanious connections
-        new Thread() {
-          public void run() {
-            connect(socket);
-          }
-        }.start();
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
   }
   
   public void connect(Socket socket)
@@ -96,16 +60,6 @@ public class WebServer {
       out.close();
     } catch (java.io.IOException e) {
       e.printStackTrace();
-    }
-  }
-  
-  public void stop()
-  {
-    try {
-      server.close();
-    } catch (java.io.IOException e) {
-      server = null;
-      System.gc(); // invoke garbage collection gods to damn the unresponsive ServerSocket to /dev/null
     }
   }
   

@@ -6,7 +6,7 @@ import java.util.HashMap;
  * An object holding data about an HTTP request which has reached our server.
  * @todo parse cookies and offer as hashmap in Page. *munch* *munch* *munch*
  */
-public class Request {
+public class Request { // rename to HTTPRequest
   
   /** The raw data given to us */
   private String text;
