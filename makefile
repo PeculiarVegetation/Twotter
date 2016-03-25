@@ -18,6 +18,9 @@ doc:
 	open -a Safari doc/index.html
 
 test:
+	java -ea -cp ":Twotter.jar:" edu.umw.twotter.Tests
+
+run:
 	java -ea -jar Twotter.jar
 
 stats:
