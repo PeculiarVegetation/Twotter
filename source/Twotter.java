@@ -14,6 +14,9 @@ import java.util.Date;
  * 
  * The insanity begins.
  */
+/**
+ * This is the main method to run the server
+ */
 public class Twotter {
   
   public static void main(String... args)
@@ -35,15 +38,13 @@ public class Twotter {
     });
     
     // start web service & setup things which cannot be saved
-    Webserver w = new Webserver(9090);
+    WebServer w = new WebServer(9090);
     w.add(new DemoPage("/demo"));
     w.add(new TwotterIndex("/"));
     w.start();
     
-    // wait for 12 seconds
-    //Util.sleep(12 * 1000);
-    // die
-    //System.exit(0);
+    ClientServer c = new ClientServer(9090);
+    
     
   }
   

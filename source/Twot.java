@@ -70,6 +70,14 @@ public class Twot extends Observable implements Observer, Serializable {
     }
   }
   
+  /**
+   * @return all the twets in this
+   */
+  public ArrayList<Twet> getFeed() {
+    
+    return null;
+  }
+  
   // candy for the Twet contructor
   public void postTwet(String text)
   {

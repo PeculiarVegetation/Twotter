@@ -19,7 +19,7 @@ import java.util.HashMap;
 /**
  * A simple web server
  */
-public class Webserver {
+public class WebServer {
   
   public static final String NOT_FOUND_TEMPLATE = "Error: there is no data at '%s'.";
   
