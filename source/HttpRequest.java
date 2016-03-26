@@ -6,12 +6,12 @@ import java.util.HashMap;
  * An object holding data about an HTTP request which has reached our server.
  * @todo parse cookies and offer as hashmap in Page. *munch* *munch* *munch*
  */
-public class Request { // rename to HTTPRequest
+public class HttpRequest {
   
   /** The raw data given to us */
   private String text;
   
-  public Request(String text)
+  public HttpRequest(String text)
   {
     this.text = text;
     /* text will look like:
@@ -49,7 +49,7 @@ Accept-Encoding: gzip, deflate
     if (endOfFile < 0) {
       endOfFile = text.indexOf("HTTP");
     }
-    assert endOfFile > 0: "Could not find end of file path in "+text;
+    assert endOfFile >= 0: "Could not find end of file path in "+text;
     return text.substring(connectionType().length(), endOfFile).trim();
   }
   

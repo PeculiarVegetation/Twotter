@@ -11,7 +11,8 @@ public class ClientServer extends Server {
     super(port);
   }
   
-  public void connect(Socket socket) {
+  public void connect(Socket socket) throws Exception {
+    // will be receiving objects from clients
     
   }
   

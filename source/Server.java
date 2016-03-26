@@ -11,7 +11,8 @@ public abstract class Server {
   ServerSocket server;
   int port;
   
-  public Server(int port) {
+  public Server(int port)
+  {
     this.port = Math.abs(port);
     
   }
@@ -25,12 +26,21 @@ public abstract class Server {
           listen();
         }
       }.start();
-      System.err.printf("%s instance listening at %s on port %d...\n", this.getClass().getName(), Util.getLocalIP(), port);
+      
+      String fullClassName = this.getClass().getName();
+      String packageName = this.getClass().getPackage().getName();
+      String shortClassName = fullClassName.substring(packageName.length()+1, fullClassName.length());
+      System.err.printf("%s listening at %s on port %d...\n", shortClassName, Util.getLocalIP(), port);
+      
     } catch (java.io.IOException e) {
       System.err.printf("Could not create server on port %d. Check that this is allowed by your system and that the port is not currently in use.\n", port);
     }
   }
   
+  /**
+   * Infinite loop which spawns new threads on new connections
+   * todo: rate limiting for DDOS attacks, etc.
+   */
   public void listen()
   {
     assert server != null: "Server must be initialized before listen() is called";
@@ -40,7 +50,11 @@ public abstract class Server {
         // launch a new thread so we can serve simultanious connections
         new Thread() {
           public void run() {
-            connect(socket);
+            try {
+              connect(socket);
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
           }
         }.start();
       }
@@ -49,8 +63,14 @@ public abstract class Server {
     }
   }
   
-  public abstract void connect(Socket socket);
+  /**
+   * Handles a single connection to the server
+   */
+  public abstract void connect(Socket socket) throws Exception;
   
+  /**
+   * Stops the server
+   */
   public void stop()
   {
     try {
@@ -60,7 +80,5 @@ public abstract class Server {
       System.gc(); // invoke garbage collection gods to damn the unresponsive ServerSocket to /dev/null
     }
   }
-  
-  
   
 }

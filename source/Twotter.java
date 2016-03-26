@@ -19,10 +19,12 @@ import java.util.Date;
  */
 public class Twotter {
   
+  protected static HashMap<AuthData, Twot> users;
+  
   public static void main(String... args)
   {
     // remember data from last time
-    HashMap<AuthData, Twot> users = rememberUsers();
+    users = rememberUsers();
     
     // This is a shutdown hook. It does nothing until the JVM exits because System.exit() is called.
     // This code is responsible for saving all out data before exiting
@@ -39,15 +41,20 @@ public class Twotter {
     
     // start web service & setup things which cannot be saved
     WebServer w = new WebServer(9090);
-    w.add(new DemoPage("/demo"));
     w.add(new TwotterIndex("/"));
     w.start();
     
     ClientServer c = new ClientServer(9009);
     c.start();
     
+    TelnetServer t = new TelnetServer(9900);
+    t.start();
+    
+    System.out.println("All servers started!");
     
   }
+  
+  
   
   /**
    * Remembers the data stored in the users hashmap.

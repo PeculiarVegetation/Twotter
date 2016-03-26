@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 /**
  * A representation of a page which may be requested by browsers
  */
-public abstract class Page {
+public abstract class HttpPage {
   /** Format-ready string containing HTTP reply headers */
   public static final String RESPONSE_TEMPLATE = ""+
     "HTTP/1.0 200 OK\n"+
@@ -16,7 +16,7 @@ public abstract class Page {
     "Content-Length: %d\n"+
     "\n\n%s";
   
-  private static final SimpleDateFormat HTTP_DATE = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
+  protected static final SimpleDateFormat HTTP_DATE = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z");
   
   /** The file path at which this page resides (eg, /index.html) */
   protected String location;
@@ -24,7 +24,7 @@ public abstract class Page {
   /**
    * Construct a page which may be reached at {@code location}
    */
-  public Page(String location)
+  public HttpPage(String location)
   {
     if (!location.startsWith("/")) {
       location = "/"+location;
@@ -36,9 +36,9 @@ public abstract class Page {
    * Wrap metadata around a response from handleConnection(2).
    * @return a fully-formatted http reply
    */
-  public byte[] connect(String received, HashMap<String, String> query)
+  public byte[] connect(String received, HashMap<String, String> query, HashMap<String, String> cookies)
   {
-    byte[] response = handleConnection(received, query).getBytes();
+    byte[] response = handleConnection(received, query, cookies).getBytes();
     return String.format(RESPONSE_TEMPLATE,
       HTTP_DATE.format(new Date()),
       response.length,
@@ -50,6 +50,6 @@ public abstract class Page {
    * Handles the logic portion of the request: authorizing the user, searching tweets, etc...
    * You know, useful stuff.
    */
-  public abstract String handleConnection(String received, HashMap<String, String> query);
+  public abstract String handleConnection(String received, HashMap<String, String> query, HashMap<String, String> cookies);
   
 }

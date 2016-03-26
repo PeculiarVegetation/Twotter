@@ -165,6 +165,10 @@ public class Util {
     return "";
   }
   
+  /**
+   * Parses strings of the form key=val&key2=val2 into a hashmap
+   * where map.get("key") == "val" and map.get("key2") == "val2"
+   */
   public static HashMap<String, String> parseMapString(String s)
   {
     HashMap<String, String> data = new HashMap<>();

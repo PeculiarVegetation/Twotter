@@ -17,60 +17,45 @@ import java.util.Date;
 import java.util.HashMap;
 
 /**
- * A simple web server
+ * A simple http web server
  */
 public class WebServer extends Server {
   
-  public static final String NOT_FOUND_TEMPLATE = "Error: there is no data at '%s'.";
-  
-  HashMap<String, Page> pages;
+  HashMap<String, HttpPage> pages;
   
   public WebServer(int port)
   {
     super(port);
-    pages = new HashMap<String, Page>();
+    pages = new HashMap<String, HttpPage>();
   }
   
-  public void connect(Socket socket)
+  public void connect(Socket socket) throws java.io.IOException
   {
-    String received;
-    try {
-      received = Util.readAll( new BufferedReader(new InputStreamReader(socket.getInputStream())) );
-    } catch (java.io.IOException e) {
-      return;
-    }
-    Request request = new Request(received);
+    String received = Util.readAll( new BufferedReader(new InputStreamReader(socket.getInputStream())) );
+    HttpRequest request = new HttpRequest(received);
     
     System.out.printf("%s %s %s %s\n", request.connectionType(), request.page(), request.queryString(), request.cookieString());
     
-    Page page = pages.get(request.page());
+    HttpPage page = pages.get(request.page());
     if (page == null) {
-      // ugly hack
-      page = new Page(request.page()) {
-        public String handleConnection(String received, HashMap<String, String> query) {
-          return "There is no page at "+this.location+".";
-        }
-      };
+      // redirect home
+      page = new HttpRedirect("/");
     }
-    byte[] replyBytes = page.connect(request.body(), request.query());
-    try {
-      OutputStream out = socket.getOutputStream();
-      out.write(replyBytes);
-      out.flush();
-      out.close();
-    } catch (java.io.IOException e) {
-      e.printStackTrace();
-    }
+    byte[] replyBytes = page.connect(request.body(), request.query(), request.cookies());
+    OutputStream out = socket.getOutputStream();
+    out.write(replyBytes);
+    out.flush();
+    out.close();
   }
   
-  public void add(Page... pages)
+  public void add(HttpPage... pages)
   {
-    for (Page p : pages) {
+    for (HttpPage p : pages) {
       add(p);
     }
   }
   
-  public void add(Page p)
+  public void add(HttpPage p)
   {
     pages.put(p.location, p);
   }
