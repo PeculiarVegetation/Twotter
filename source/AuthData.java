@@ -15,13 +15,15 @@ public class AuthData {
   
   public AuthData(String userName, String loginCookie, String passwordHash)
   {
-    assert userName != null: "You passed a null value for 'userName' into the AuthData constructor";
-    assert loginCookie != null: "You passed a null value for 'loginCookie' into the AuthData constructor";
-    assert passwordHash != null: "You passed a null value for 'passwordHash' into the AuthData constructor";
+    if (userName == null) userName = "";
+    if (loginCookie == null) loginCookie = "";
+    if (passwordHash == null) passwordHash = "";
+    
     // limit username length to max of 128 characters
     if (userName.length() > 128) {
       userName = userName.substring(0, 128);
     }
+    
     this.userName = userName;
     this.loginCookie = loginCookie;
     this.passwordHash = passwordHash;
@@ -42,6 +44,10 @@ public class AuthData {
     return userName.equalsIgnoreCase(a.userName) &&
           (passwordHash.equalsIgnoreCase(a.passwordHash) || loginCookie.equalsIgnoreCase(a.loginCookie));
     
+  }
+  
+  public String toString() {
+    return userName;
   }
   
   public static String createLoginCookie()

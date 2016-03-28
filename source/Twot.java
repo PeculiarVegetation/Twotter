@@ -37,6 +37,20 @@ public class Twot extends Observable implements Observer, Serializable {
     followers = new ArrayList<Twot>();
   }
   
+  public boolean equals(Object o) {
+    if (o instanceof String) {
+      return ((String) o).equalsIgnoreCase(authData.userName);
+      
+    } else if (o instanceof Long) {
+      return ((Long) o) == id.id;
+    }
+    return false;
+  }
+  
+  public String userName() {
+    return authData.userName;
+  }
+  
   /**
    * Function to check login data for a user
    */

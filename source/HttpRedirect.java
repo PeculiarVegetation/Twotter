@@ -21,7 +21,7 @@ public class HttpRedirect extends HttpPage {
    * Wrap metadata around a response from handleConnection(2).
    * @return a fully-formatted http reply
    */
-  public byte[] connect(String received, HashMap<String, String> query, HashMap<String, String> cookies)
+  public byte[] connect(String received, HashMap<String, String> query, HashMap<String, String> cookies, AuthData auth)
   {
     return String.format(RESPONSE_TEMPLATE,
       new String(this.location),
@@ -29,7 +29,7 @@ public class HttpRedirect extends HttpPage {
     ).getBytes();
   }
   
-  public String handleConnection(String received, HashMap<String, String> query, HashMap<String, String> cookies) {
+  public String handleConnection(String received, HashMap<String, String> query, HashMap<String, String> cookies, AuthData auth) {
     assert false: "handleConnection(3) not used in HttpRedirect class";
     return null;
   }

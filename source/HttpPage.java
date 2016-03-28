@@ -36,9 +36,9 @@ public abstract class HttpPage {
    * Wrap metadata around a response from handleConnection(2).
    * @return a fully-formatted http reply
    */
-  public byte[] connect(String received, HashMap<String, String> query, HashMap<String, String> cookies)
+  public byte[] connect(String received, HashMap<String, String> query, HashMap<String, String> cookies, AuthData auth)
   {
-    byte[] response = handleConnection(received, query, cookies).getBytes();
+    byte[] response = handleConnection(received, query, cookies, auth).getBytes();
     return String.format(RESPONSE_TEMPLATE,
       HTTP_DATE.format(new Date()),
       response.length,
@@ -50,6 +50,6 @@ public abstract class HttpPage {
    * Handles the logic portion of the request: authorizing the user, searching tweets, etc...
    * You know, useful stuff.
    */
-  public abstract String handleConnection(String received, HashMap<String, String> query, HashMap<String, String> cookies);
+  public abstract String handleConnection(String received, HashMap<String, String> query, HashMap<String, String> cookies, AuthData auth);
   
 }

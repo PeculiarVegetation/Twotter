@@ -17,6 +17,11 @@ import java.security.MessageDigest;
  */
 public class Util {
   
+  public static String base64Decode(String s)
+  {
+    return new String(java.util.Base64.getDecoder().decode(s));
+  }
+  
   /**
    * @param characters the number of characters to return
    * @return           a hex string full of entropy
@@ -102,11 +107,11 @@ public class Util {
     while (in.hasNext()) {
       data.append(in.nextLine());
       data.append("\n");
-      try {
+      /*try {
         if (is.available() < 1) {
           break;
         }
-      } catch (java.io.IOException e) {}
+      } catch (java.io.IOException e) {}*/
     }
     return data.toString();
   }

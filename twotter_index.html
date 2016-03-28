@@ -19,6 +19,10 @@
         border-collapse: collapse;
       }
       
+      table.clear, table.clear>tr, table.clear>tr>td {
+        border: 1px solid transparent !important;
+      }
+      
       hr {
         width: 100%;
         border-style: solid;
@@ -29,11 +33,11 @@
   </head>
   <body>
     <header>
-      <table>
+      <table class='clear'>
         <tr>
           <td><img src=''></td>
           <td><h1>Twotter</h1></td>
-          <!--LOGIN_COLUMNS-->
+          
         </tr>
       </table>
       <hr>

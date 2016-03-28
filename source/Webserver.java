@@ -34,14 +34,15 @@ public class WebServer extends Server {
     String received = Util.readAll( new BufferedReader(new InputStreamReader(socket.getInputStream())) );
     HttpRequest request = new HttpRequest(received);
     
-    System.out.printf("%s %s %s %s\n", request.connectionType(), request.page(), request.queryString(), request.cookieString());
+    System.out.printf("%s %s %s %s %s\n",
+      request.connectionType(), request.page(), request.queryString(), request.cookieString(), request.authorization());
     
     HttpPage page = pages.get(request.page());
     if (page == null) {
       // redirect home
       page = new HttpRedirect("/");
     }
-    byte[] replyBytes = page.connect(request.body(), request.query(), request.cookies());
+    byte[] replyBytes = page.connect(request.body(), request.query(), request.cookies(), request.authorization());
     OutputStream out = socket.getOutputStream();
     out.write(replyBytes);
     out.flush();

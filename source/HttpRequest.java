@@ -4,12 +4,12 @@ import java.util.HashMap;
 
 /**
  * An object holding data about an HTTP request which has reached our server.
- * @todo parse cookies and offer as hashmap in Page. *munch* *munch* *munch*
+ * todo: chrome GET with a query string (eg, index.html?param=1) makes an assertion fail
  */
 public class HttpRequest {
   
   /** The raw data given to us */
-  private String text;
+  private final String text;
   
   public HttpRequest(String text)
   {
@@ -23,6 +23,7 @@ Cookie: cookie=value
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_3) AppleWebKit/601.4.4 (KHTML, like Gecko) Version/9.0.3 Safari/601.4.4
 Accept-Language: en-us
 Cache-Control: max-age=0
+Authorization: Basic aHR0cHdhdGNoOmY=
 Accept-Encoding: gzip, deflate
     */
   }
@@ -59,7 +60,12 @@ Accept-Encoding: gzip, deflate
    */
   public String queryString()
   {
-    String queryString = text.substring(connectionType().length()+page().length(), text.indexOf("HTTP"));
+    int begin = connectionType().length()+page().length();
+    int end = text.indexOf("HTTP");
+    if (begin > end) {
+      begin = end-1;
+    }
+    String queryString = text.substring(begin, end);
     if (queryString.length() > 1) {
       queryString = queryString.substring(2); // cut off space and '?' character
     }
@@ -78,10 +84,36 @@ Accept-Encoding: gzip, deflate
   /**
    * Parse out cookies from web browser
    */
-  public String cookieString() {
+  public String cookieString()
+  {
     if (text.contains("Cookie")) {
       int cookieLocation = text.indexOf("Cookie: ") + 8;
       return text.substring(cookieLocation, text.indexOf("\n", cookieLocation)).trim();
+    }
+    return "";
+  }
+  
+  public AuthData authorization()
+  {
+    System.out.println(authorizationString());
+    String[] authData = Util.base64Decode(authorizationString()).split(":");
+    if (authData.length == 2) {
+      return new AuthData(authData[0], Util.hash(authData[1]));
+    }
+    String username = cookies().get("username");
+    String passwordhash = cookies().get("passwordhash");
+    String logincookie = cookies().get("logincookie");
+    return new AuthData(username, logincookie, passwordhash);
+  }
+  
+  /**
+   * Parse out HTTP Authorization data
+   */
+  public String authorizationString()
+  {
+    if (text.contains("Authorization")) {
+      int authLocation = text.indexOf("Authorization: Basic") + 20;
+      return text.substring(authLocation, text.indexOf("\n", authLocation)).trim();
     }
     return "";
   }

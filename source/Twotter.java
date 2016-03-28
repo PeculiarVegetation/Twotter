@@ -19,12 +19,12 @@ import java.util.Date;
  */
 public class Twotter {
   
-  protected static HashMap<AuthData, Twot> users;
+  protected static HashMap<AuthData, Twot> twots;
   
   public static void main(String... args)
   {
     // remember data from last time
-    users = rememberUsers();
+    twots = rememberUsers();
     
     // This is a shutdown hook. It does nothing until the JVM exits because System.exit() is called.
     // This code is responsible for saving all out data before exiting
@@ -33,7 +33,7 @@ public class Twotter {
       {
         System.out.printf("Exiting at %s\n", new Date());
         // save our user's data
-        Remember.put("TWOTS", users);
+        Remember.put("TWOTS", twots);
         
         System.out.printf("Goodbye!\n");
       }
@@ -42,6 +42,7 @@ public class Twotter {
     // start web service & setup things which cannot be saved
     WebServer w = new WebServer(9090);
     w.add(new TwotterIndex("/"));
+    w.add(new TwotHomepage("/home"));
     w.start();
     
     ClientServer c = new ClientServer(9009);
@@ -62,9 +63,9 @@ public class Twotter {
    */
   public static HashMap<AuthData, Twot> rememberUsers()
   {
-    HashMap<AuthData, Twot> users = (HashMap<AuthData, Twot>) Remember.get("TWOTS");
-    if (users != null) {
-      return users;
+    HashMap<AuthData, Twot> twots = (HashMap<AuthData, Twot>) Remember.get("TWOTS");
+    if (twots != null) {
+      return twots;
     }
     return new HashMap<AuthData, Twot>();
   }
