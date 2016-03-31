@@ -18,7 +18,7 @@ doc:
 	open -a Safari doc/index.html
 
 test:
-	java -ea -cp ":Twotter.jar:" edu.umw.twotter.Tests
+	@./test.sh
 
 run:
 	java -ea -jar Twotter.jar

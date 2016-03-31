@@ -17,12 +17,14 @@ import java.util.ArrayList;
  */
 public class Twot extends Observable implements Observer, Serializable {
   
-  private AuthData authData;
-  Identifier id;
-  ArrayList<Twet> personalTwets;
+  protected AuthData authData;
+  protected Identifier id;
+  protected ArrayList<Twet> personalTwets;
   
-  ArrayList<Twot> followed;
-  ArrayList<Twot> followers;
+  protected ArrayList<Twot> followed;
+  
+  // prefname is used in place of auth name when prefname is not null
+  String preferredName;
   
   String profileImageUrl;
   boolean isFoonish;
@@ -34,7 +36,6 @@ public class Twot extends Observable implements Observer, Serializable {
     this.authData = authData;
     personalTwets = new ArrayList<Twet>();
     followed = new ArrayList<Twot>();
-    followers = new ArrayList<Twot>();
   }
   
   public boolean equals(Object o) {
@@ -116,6 +117,6 @@ public class Twot extends Observable implements Observer, Serializable {
   
   public String toHtml()
   {
-    return String.format("<a href='/twots/%s'>%s</a>", id, authData.userName);
+    return String.format("<a href='/twots?id=%s'>%s</a>", id, authData.userName);
   }
 }

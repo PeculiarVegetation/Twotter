@@ -1,0 +1,36 @@
+body {
+  background: #889;
+  color: white;
+  font-family: sans-serif;
+  font-weight: lighter;
+}
+
+table {
+  width: 100%;
+}
+
+table, th, td {
+  border: 1px solid transparent;
+  border-collapse: collapse;
+}
+
+hr {
+  width: 100%;
+  border-style: solid;
+  border-width: 0 0 1px 0;
+}
+
+input {
+  margin: 1px;
+}
+
+.marginless {
+  margin: 1px;
+}
+
+.bordered {
+  border-style: solid;
+  border-width: 1px;
+  border-color: white;
+  padding: 2px;
+}

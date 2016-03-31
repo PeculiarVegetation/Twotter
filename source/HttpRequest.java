@@ -50,8 +50,16 @@ Accept-Encoding: gzip, deflate
     if (endOfFile < 0) {
       endOfFile = text.indexOf("HTTP");
     }
-    assert endOfFile >= 0: "Could not find end of file path in "+text;
-    return text.substring(connectionType().length(), endOfFile).trim();
+    if (endOfFile >= 0) {
+      System.err.println("Could not find end of file path in "+text);
+      //return "/";
+    }
+    String tenativePage = text.substring(connectionType().length(), endOfFile).trim();
+    if (tenativePage.contains("\n")) {
+      // whoops
+      return text.substring(connectionType().length(), text.indexOf(" ", connectionType().length()+2)).trim();
+    }
+    return tenativePage;
   }
   
   /**
@@ -95,7 +103,7 @@ Accept-Encoding: gzip, deflate
   
   public AuthData authorization()
   {
-    System.out.println(authorizationString());
+    //System.out.println(authorizationString());
     String[] authData = Util.base64Decode(authorizationString()).split(":");
     if (authData.length == 2) {
       return new AuthData(authData[0], Util.hash(authData[1]));

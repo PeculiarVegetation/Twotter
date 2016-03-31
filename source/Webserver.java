@@ -34,7 +34,7 @@ public class WebServer extends Server {
     String received = Util.readAll( new BufferedReader(new InputStreamReader(socket.getInputStream())) );
     HttpRequest request = new HttpRequest(received);
     
-    System.out.printf("%s %s %s %s %s\n",
+    System.out.printf("%s '%s' '%s' '%s' '%s'\n",
       request.connectionType(), request.page(), request.queryString(), request.cookieString(), request.authorization());
     
     HttpPage page = pages.get(request.page());

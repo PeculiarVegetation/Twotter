@@ -29,7 +29,7 @@ public abstract class HttpAuthPage extends HttpPage {
    */
   public byte[] connect(String received, HashMap<String, String> query, HashMap<String, String> cookies, AuthData auth)
   {
-    if (auth == null || Twotter.twots.get(auth) == null) {
+    if (auth == null || Twotter.getTwot(auth) == null) {
       return String.format(DENIED_RESPONSE_TEMPLATE,
         new String(this.location),
         HTTP_DATE.format(new Date()),
@@ -40,7 +40,7 @@ public abstract class HttpAuthPage extends HttpPage {
     byte[] response = handleConnection(received, query, cookies, auth).getBytes();
     return String.format(RESPONSE_TEMPLATE,
       HTTP_DATE.format(new Date()),
-      response.length,
+      response.length+1,
       new String(response)
     ).getBytes();
   }

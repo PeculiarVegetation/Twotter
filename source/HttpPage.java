@@ -41,7 +41,7 @@ public abstract class HttpPage {
     byte[] response = handleConnection(received, query, cookies, auth).getBytes();
     return String.format(RESPONSE_TEMPLATE,
       HTTP_DATE.format(new Date()),
-      response.length,
+      response.length+1,
       new String(response)
     ).getBytes();
   }

@@ -3,7 +3,7 @@ package edu.umw.twotter;
 /**
  * Stores data to identify a user. 
  */
-public class AuthData {
+public class AuthData implements java.io.Serializable {
   protected String userName;
   protected String loginCookie;
   protected String passwordHash;
@@ -34,8 +34,16 @@ public class AuthData {
     return loginCookie;
   }
   
+  public boolean usernameMatches(AuthData a) {
+    return this.userName.equalsIgnoreCase(a.userName);
+  }
+  
   public boolean equals(Object o)
   {
+    if (o instanceof String) {
+      return userName.equalsIgnoreCase((String) o);
+    }
+    
     if (!(o instanceof AuthData)) {
       return false;
     }
@@ -46,7 +54,13 @@ public class AuthData {
     
   }
   
-  public String toString() {
+  public int hashCode()
+  {
+    return userName.hashCode();
+  }
+  
+  public String toString()
+  {
     return userName;
   }
   

@@ -17,6 +17,13 @@ import java.security.MessageDigest;
  */
 public class Util {
   
+  public static String urlDecode(String s) {
+    try {
+      return java.net.URLDecoder.decode(s, "UTF-8");
+    } catch (Exception e) {}
+    return s;
+  }
+  
   public static String base64Decode(String s)
   {
     return new String(java.util.Base64.getDecoder().decode(s));
@@ -179,6 +186,9 @@ public class Util {
     HashMap<String, String> data = new HashMap<>();
     for (String pair : s.split("&")) {
       String[] ends = pair.split("=");
+      for (int i=0; i<ends.length && i < 3; i++) {
+        ends[i] = urlDecode(ends[i]);
+      }
       if (ends.length > 1) {
         data.put(ends[0], ends[1]);
       } else if (ends.length > 0) {
